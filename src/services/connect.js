@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { DB_URL } from './utils/const.js'
+import { DB_URL } from '../utils/const.js'
 
 mongoose.set('strictQuery', false)
 

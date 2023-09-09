@@ -5,9 +5,9 @@ import morgan from 'morgan'
 import helmet from 'helmet'
 import bodyParser from 'body-parser'
 
-import { PORT } from './utils/const.js'
-import appRoutes from './routes/index.js'
-import connectDB from './connect.js'
+import { PORT } from './src/utils/const.js'
+import appRoutes from './src/routes/index.js'
+import connectDB from './src/services/connect.js'
 
 const app = express()
 
