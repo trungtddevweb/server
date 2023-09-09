@@ -16,7 +16,7 @@ import {
 } from '../controllers/product.js'
 import { verifyAdmin } from '../middlewares/verify.js'
 import { uploadCloudProduct } from '../middlewares/cloudinary.js'
-import { validateFlashSaleProduct } from '../middlewares/joiMiddleWare.js'
+// import { validateFlashSaleProduct } from '../middlewares/joiMiddleWare.js'
 
 const router = express.Router()
 
@@ -53,12 +53,12 @@ router.get('/fields/search', searchByField)
 router.get('/search/hots', getProductsByHot)
 
 // CREATE PRODUCT IN FLASH SALE
-router.post(
-    '/flash-sale/create',
-    verifyAdmin,
-    validateFlashSaleProduct,
-    flashSaleProduct
-)
+// router.post(
+//     '/flash-sale/create',
+//     verifyAdmin,
+//     validateFlashSaleProduct,
+//     flashSaleProduct
+// )
 
 // GET ALL PRODUCT IN FLASH SALE
 router.get('/flash-sale/products', getALlProductsInflashSale)
