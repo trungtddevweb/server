@@ -1,13 +1,13 @@
 {
     "name": "shopping-server",
     "version": "1.0.0",
-    "main": "index.js",
+    "main": "server.js",
     "license": "MIT",
     "keywords": [],
     "author": "",
     "type": "module",
     "scripts": {
-        "dev": "nodemon index.js"
+        "dev": "nodemon server.js"
     },
     "devDependencies": {
         "nodemon": "^3.0.1"
