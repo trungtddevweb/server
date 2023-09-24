@@ -40,10 +40,10 @@ const forbidden = (res) =>
         message: 'Truy cập bị từ chối',
     })
 
-const notFound = (res) =>
+const notFound = (res, message) =>
     responseWithData(res, 404, {
         success: false,
-        message: 'Không tìm thấy!',
+        message,
     })
 
 export default {
