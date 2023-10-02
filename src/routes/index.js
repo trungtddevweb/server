@@ -4,6 +4,7 @@ import postRoutes from './post.js'
 import authRoutes from './auth.js'
 import commentRoutes from './comment.js'
 import productRoutes from './product.js'
+import { verifyAdmin } from '../middlewares/verify.js'
 
 const router = express.Router()
 

@@ -1,37 +1,37 @@
 // import Post from '../models/Post.js'
-// import User from '../models/User.js'
-// import { optionsPaginate } from '../utils/const.js'
+import User from '../models/User.js'
+import { optionsPaginate } from '../utils/const.js'
 
-// // GET A USER
-// export const getAUser = async (req, res) => {
-//     const { userId } = req.params
-//     try {
-//         const user = await User.findById(userId)
-//         if (!user)
-//             return res.status(404).json({
-//                 status: 'Not Found',
-//                 message: 'Không tìm thấy người dùng.',
-//             })
-//         res.status(200).json({ status: 'Success', data: user })
-//     } catch (error) {
-//         console.log(error)
-//         res.status(500).json({ status: 'error', message: error })
-//     }
-// }
+// GET A USER
+export const getAUser = async (req, res) => {
+    const { userId } = req.params
+    try {
+        const user = await User.findById(userId)
+        if (!user)
+            return res.status(404).json({
+                status: 'Not Found',
+                message: 'Không tìm thấy người dùng.',
+            })
+        res.status(200).json({ status: 'Success', data: user })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ status: 'error', message: error })
+    }
+}
 
-// // GET ALL USERS
-// export const getAllUsers = async (req, res) => {
-//     const { limit, page } = req.body
-//     try {
-//         const users = await User.paginate({}, optionsPaginate(limit, page))
-//         res.status(200).json({ status: 'Success', data: users })
-//     } catch (error) {
-//         console.log(error)
-//         res.status(500).json({ status: 'error', message: error })
-//     }
-// }
+// GET ALL USERS
+export const getAllUsers = async (req, res) => {
+    const { limit, page } = req.body
+    try {
+        const users = await User.paginate({}, optionsPaginate(limit, page))
+        res.status(200).json({ status: 'Success', data: users })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ status: 'error', message: error })
+    }
+}
 
-// // POST
+// POST
 // export const getAllPostSaved = async (req, res) => {
 //     const { limit, page } = req.query
 //     const { email } = req.user
@@ -125,35 +125,35 @@
 //     }
 // }
 
-// export const updatedUser = async (req, res) => {
-//     const { email } = req.user
-//     try {
-//         const user = await User.findOneAndUpdate(
-//             { email },
-//             { ...req.body },
-//             {
-//                 new: true,
-//             }
-//         )
+export const updatedUser = async (req, res) => {
+    const { email } = req.user
+    try {
+        const user = await User.findOneAndUpdate(
+            { email },
+            { ...req.body },
+            {
+                new: true,
+            }
+        )
 
-//         if (!user) {
-//             // Nếu không tìm thấy người dùng, trả về thông báo lỗi
-//             return res.status(404).json({
-//                 status: 404,
-//                 message: 'Không tìm thấy người dùng với email đã cung cấp.',
-//             })
-//         }
+        if (!user) {
+            // Nếu không tìm thấy người dùng, trả về thông báo lỗi
+            return res.status(404).json({
+                status: 404,
+                message: 'Không tìm thấy người dùng với email đã cung cấp.',
+            })
+        }
 
-//         return res.status(200).json({
-//             status: 200,
-//             message: 'Cập nhập thông tin người dùng thành công.',
-//             data: user,
-//         })
-//     } catch (error) {
-//         console.log(error)
-//         res.status(500).json({
-//             status: 'error',
-//             message: error,
-//         })
-//     }
-// }
+        return res.status(200).json({
+            status: 200,
+            message: 'Cập nhập thông tin người dùng thành công.',
+            data: user,
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            status: 'error',
+            message: error,
+        })
+    }
+}

@@ -61,6 +61,7 @@ export const signIn = async (req, res) => {
             name: user.name,
             avtUrl: user.avtUrl,
             email: user.email,
+            role: user.role,
         })
     } catch (error) {
         responseHandler.error(res, error)
