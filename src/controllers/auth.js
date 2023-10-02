@@ -57,7 +57,6 @@ export const signIn = async (req, res) => {
         responseHandler.success(res, {
             accessToken,
             userId: user._id,
-            postsSaved: user.postsSaved,
             name: user.name,
             avtUrl: user.avtUrl,
             email: user.email,
@@ -132,10 +131,10 @@ export const googleSignIn = async (req, res) => {
             res.status(200).json({
                 accessToken,
                 userId: existingUser._id,
-                postsSaved: existingUser.postsSaved,
                 name: existingUser.name,
                 avtUrl: existingUser.avtUrl,
                 email: existingUser.email,
+                role: existingUser.role,
             })
         } else {
             const newUser = User({
@@ -151,10 +150,10 @@ export const googleSignIn = async (req, res) => {
             res.status(200).json({
                 accessToken,
                 userId: newUser._id,
-                postsSaved: [],
                 name: newUser.name,
                 avtUrl: newUser.avtUrl,
                 email: newUser.email,
+                role: newUser.role,
             })
         }
     } catch (error) {
