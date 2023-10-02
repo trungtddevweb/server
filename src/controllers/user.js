@@ -4,7 +4,7 @@ import { optionsPaginate } from '../utils/const.js'
 
 // GET A USER
 export const getAUser = async (req, res) => {
-    const { userId } = req.params
+    const { userId } = req.body
     try {
         const user = await User.findById(userId)
         if (!user)
