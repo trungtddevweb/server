@@ -11,7 +11,7 @@ export const createNewComment = async (req, res) => {
         const user = await User.findOne({ email })
         if (!user)
             return responseHandler.notFound(res, 'Không tìm thấy người dùng.')
-        const product = await Product.findById(postId)
+        const product = await Product.findById(productId)
         if (!product)
             return responseHandler.notFound(res, 'Sản phẩm không tồn tại.')
         const newComment = Comment({
@@ -29,7 +29,7 @@ export const createNewComment = async (req, res) => {
             createdAt: newComment.createdAt,
             updatedAt: newComment.updatedAt,
         })
-        await post.save()
+        await product.save()
 
         responseHandler.created(res, product)
     } catch (error) {
