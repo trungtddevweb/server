@@ -6,6 +6,12 @@ import {
     generateRefreshToken,
 } from '../services/authServices.js'
 import responseHandler from '../handlers/responseHandler.js'
+import {
+    SECRET_OTP_KEY,
+    TWILIO_AUTH_KEY,
+    TWILIO_SID_KEY,
+} from '../utils/const.js'
+import speakeasy from 'speakeasy'
 
 // SIGN_IN
 export const signIn = async (req, res) => {
@@ -54,14 +60,8 @@ export const signIn = async (req, res) => {
             { new: true }
         )
         res.setHeader('Authorization', `Bearer ${accessToken}`)
-        responseHandler.success(res, {
-            accessToken,
-            userId: user._id,
-            name: user.name,
-            avtUrl: user.avtUrl,
-            email: user.email,
-            role: user.role,
-        })
+        user.password = undefined
+        responseHandler.success(res, user)
     } catch (error) {
         responseHandler.error(res, error)
     }
@@ -78,6 +78,7 @@ export const signUp = async (req, res) => {
         const newUser = User({
             ...req.body,
             password: hashPass,
+            secretKey: speakeasy.generateSecret(),
         })
         await newUser.save()
         responseHandler.created(res, newUser)
@@ -128,14 +129,7 @@ export const googleSignIn = async (req, res) => {
 
         if (existingUser) {
             await existingUser.updateOne({ accessToken }, { new: true })
-            res.status(200).json({
-                accessToken,
-                userId: existingUser._id,
-                name: existingUser.name,
-                avtUrl: existingUser.avtUrl,
-                email: existingUser.email,
-                role: existingUser.role,
-            })
+            responseHandler.success(res, existingUser)
         } else {
             const newUser = User({
                 name,
@@ -144,23 +138,14 @@ export const googleSignIn = async (req, res) => {
                 accessToken,
                 avtUrl: picture,
                 googleLogin: true,
+                secretKey: speakeasy.generateSecret(),
             })
 
             await newUser.save()
-            res.status(200).json({
-                accessToken,
-                userId: newUser._id,
-                name: newUser.name,
-                avtUrl: newUser.avtUrl,
-                email: newUser.email,
-                role: newUser.role,
-            })
+            responseHandler.success(res, newUser)
         }
     } catch (error) {
-        console.log(error)
-        res.status(500).json({
-            message: 'Đã xảy ra lỗi trong quá trình xử lý yêu cầu',
-        })
+        responseHandler.error(res, error)
     }
 }
 
@@ -192,9 +177,32 @@ export const refreshToken = async (req, res, next) => {
         res.setHeader('Authorization', authorizationHeader)
         res.status(200).json({ accessToken: newAccessToken })
     } catch (error) {
-        console.log(error)
-        res.status(500).json({
-            message: 'Đã xảy ra lỗi trong quá trình xử lý yêu cầu',
-        })
+        responseHandler.error(res, error)
+    }
+}
+
+export const forgotPassword = async (req, res, next) => {
+    const { email } = req.body
+    try {
+        if (!email)
+            return responseHandler.error(res, {
+                message: 'Hãy nhập Email',
+            })
+        const user = await User.findOne({ email })
+        if (!user)
+            return responseHandler.notFound(res, 'Người dùng không tồn tại')
+        req.payload = user
+        next()
+    } catch (error) {
+        responseHandler.error(res, error)
+    }
+}
+
+export const changePassword = async (req, res) => {
+    const user = req.user
+    try {
+        res.send(user)
+    } catch (error) {
+        responseHandler.error(res, error)
     }
 }

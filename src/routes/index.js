@@ -4,6 +4,8 @@ import postRoutes from './post.js'
 import authRoutes from './auth.js'
 import commentRoutes from './comment.js'
 import productRoutes from './product.js'
+import dashboardRoutes from './dashboard.js'
+
 import { verifyAdmin } from '../middlewares/verify.js'
 
 const router = express.Router()
@@ -17,5 +19,7 @@ router.use('/post', postRoutes)
 router.use('/comment', commentRoutes)
 
 router.use('/products', productRoutes)
+
+router.use('/dashboard', verifyAdmin, dashboardRoutes)
 
 export default router

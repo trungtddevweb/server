@@ -19,18 +19,6 @@ export const getAUser = async (req, res) => {
     }
 }
 
-// GET ALL USERS
-export const getAllUsers = async (req, res) => {
-    const { limit, page } = req.body
-    try {
-        const users = await User.paginate({}, optionsPaginate(limit, page))
-        res.status(200).json({ status: 'Success', data: users })
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({ status: 'error', message: error })
-    }
-}
-
 // POST
 // export const getAllPostSaved = async (req, res) => {
 //     const { limit, page } = req.query
