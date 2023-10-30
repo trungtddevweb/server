@@ -191,6 +191,11 @@ export const forgotPassword = async (req, res, next) => {
         const user = await User.findOne({ email })
         if (!user)
             return responseHandler.notFound(res, 'Người dùng không tồn tại')
+        if (user && user.googleLogin)
+            return responseHandler.badRequest(
+                res,
+                'Tài khoản được liên kết với Google, hãy thử với email khác'
+            )
         req.payload = user
         next()
     } catch (error) {
@@ -199,9 +204,24 @@ export const forgotPassword = async (req, res, next) => {
 }
 
 export const changePassword = async (req, res) => {
-    const user = req.user
+    const { email, password, confirmPassword } = req.body
     try {
-        res.send(user)
+        const user = await User.findOne({ email })
+        if (!user)
+            return responseHandler.notFound(res, 'Người dùng không tồn tại')
+        if (password !== confirmPassword)
+            return responseHandler.badRequest(
+                res,
+                'Xác nhận mật khẩu chưa trùng khớp'
+            )
+        const salt = bcrypt.genSaltSync(10)
+        user.password = bcrypt.hashSync(password, salt)
+
+        await user.save()
+        responseHandler.success(res, {
+            success: true,
+            message: 'Cập nhập mật khẩu thành công',
+        })
     } catch (error) {
         responseHandler.error(res, error)
     }

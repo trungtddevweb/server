@@ -27,6 +27,8 @@ router.post('/refresh-token', refreshToken)
 
 router.post('/forgot-password', forgotPassword, sendSMS)
 
-router.post('/verify-otp', verifyOTP, changePassword)
+router.post('/verify-otp', verifyOTP)
+
+router.post('/change-password', changePassword)
 
 export default router

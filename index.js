@@ -41,9 +41,4 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
 })
 
-process.on('unhandledRejection', (err) => {
-    console.error(`An error occurred: ${err.message}`)
-    server.close(() => process.exit(1))
-})
-
 export default app
