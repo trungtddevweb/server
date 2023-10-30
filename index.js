@@ -21,6 +21,17 @@ app.use(helmet())
 app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }))
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*')
+
+    res.setHeader(
+        'Access-Control-Allow-Methods',
+        'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+    )
+
+    res.setHeader('Access-Control-Allow-Credentials', true)
+    next()
+})
 
 app.use('/api', appRoutes)
 
