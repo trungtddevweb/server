@@ -13,15 +13,12 @@ const app = express()
 
 // Middlewawre
 app.use(express.json())
-app.use(
-    cors({
-        origin: ['*'],
-    })
-)
+app.use(cors())
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: false }))
 app.use(morgan('combined'))
 app.use(helmet())
+app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }))
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 
@@ -35,6 +32,11 @@ connectDB()
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
+})
+
+process.on('unhandledRejection', (err) => {
+    console.error(`An error occurred: ${err.message}`)
+    server.close(() => process.exit(1))
 })
 
 export default app
