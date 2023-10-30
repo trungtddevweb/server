@@ -12,8 +12,15 @@ import connectDB from './src/services/connect.js'
 const app = express()
 
 // Middlewawre
+
+app.use(
+    cors({
+        origin: ['http://localhost:5173', 'https://may-shopping.vercel.app'],
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        credentials: true,
+    })
+)
 app.use(express.json())
-app.use(cors())
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: false }))
 app.use(morgan('combined'))
@@ -21,17 +28,6 @@ app.use(helmet())
 app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }))
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*')
-
-    res.setHeader(
-        'Access-Control-Allow-Methods',
-        'GET, POST, OPTIONS, PUT, PATCH, DELETE'
-    )
-
-    res.setHeader('Access-Control-Allow-Credentials', true)
-    next()
-})
 
 app.use('/api', appRoutes)
 
