@@ -54,14 +54,17 @@ export const signIn = async (req, res) => {
             user.name
         )
 
-        await user.updateOne(
+        await User.findOneAndUpdate(
             { email },
-            { accessToken, refreshToken },
+            { refreshToken, accessToken },
             { new: true }
         )
         res.setHeader('Authorization', `Bearer ${accessToken}`)
         user.password = undefined
-        responseHandler.success(res, user)
+        responseHandler.success(res, {
+            ...user._doc,
+            accessToken,
+        })
     } catch (error) {
         responseHandler.error(res, error)
     }

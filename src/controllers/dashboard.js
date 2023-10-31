@@ -36,3 +36,5 @@ export const getAllProductsDashboard = async (req, res) => {
         responseHandler.error(res, error)
     }
 }
+
+export const getAllStarsDashboard = async () => {}
