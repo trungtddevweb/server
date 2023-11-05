@@ -25,10 +25,11 @@ router.post('/google-sign-in', googleSignIn)
 
 router.post('/refresh-token', refreshToken)
 
-router.post('/forgot-password', forgotPassword, sendSMS)
+// api/auth/path...
+router.post('/forgot-password', forgotPassword, sendSMS) // gửi field email
 
-router.post('/verify-otp', verifyOTP)
+router.post('/verify-otp', verifyOTP) // gửi email, token {token là mã OTP gửi về đt}
 
-router.post('/change-password', changePassword)
+router.post('/change-password', changePassword) // gửi  email, password, confirmPassword 
 
 export default router

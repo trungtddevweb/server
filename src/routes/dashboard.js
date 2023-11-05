@@ -1,7 +1,7 @@
 import express from 'express'
 import {
     getAllOrdersDashboard,
-    getAllProductsDashboard,
+    getAllSalesDashboard,
     getAllUsersDashboard,
     getAllStarsDashboard,
 } from '../controllers/dashboard.js'
@@ -10,10 +10,10 @@ const router = express.Router()
 
 router.get('/users', getAllUsersDashboard)
 
-router.get('/products', getAllProductsDashboard)
+router.get('/products', getAllSalesDashboard)
 
 router.get('/orders', getAllOrdersDashboard)
 
-router.get('/stars', getAllStarsDashboard)
+router.get('/rating', getAllStarsDashboard)
 
 export default router

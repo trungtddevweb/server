@@ -1,6 +1,7 @@
 import express from 'express'
 import {
     getAUser,
+    ratingProduct,
     // getAllPostSaved,
     // removePostSaved,
     // savePostToUser,
@@ -17,6 +18,8 @@ router.get('/find-user/:userId', verifyAdmin, getAUser)
 // router.post('/saved-post', verifyUser, savePostToUser)
 
 // router.post('/remove-post-saved', verifyUser, removePostSaved)
+
+router.post('/rating-product/:productId', verifyUser, ratingProduct)
 
 router.patch('/update-user', verifyUser, updatedUser)
 

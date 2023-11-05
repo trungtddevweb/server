@@ -1,4 +1,6 @@
 // import Post from '../models/Post.js'
+import responseHandler from '../handlers/responseHandler.js'
+import Product from '../models/Product.js'
 import User from '../models/User.js'
 import { optionsPaginate } from '../utils/const.js'
 
@@ -143,5 +145,35 @@ export const updatedUser = async (req, res) => {
             status: 'error',
             message: error,
         })
+    }
+}
+
+export const ratingProduct = async (req, res) => {
+    const { productId } = req.params
+    const { ratingValue } = req.body
+    const { userId } = req.user
+    try {
+        const updatedProduct = await Product.findByIdAndUpdate(
+            productId,
+            {
+                $push: {
+                    rating: {
+                        userId: userId,
+                        ratingValue,
+                    },
+                },
+            },
+            { new: true }
+        )
+
+        if (!updatedProduct)
+            return responseHandler.notFound(res, 'Sản phẩm không tồn tại')
+        responseHandler.success(res, {
+            success: true,
+            message: 'Đánh giá sản phẩm thành công',
+            data: updatedProduct,
+        })
+    } catch (error) {
+        responseHandler.error(res, error)
     }
 }
