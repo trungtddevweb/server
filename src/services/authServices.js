@@ -1,11 +1,9 @@
 import jwt from 'jsonwebtoken'
 import { JWT_KEY } from '../utils/const.js'
 
-export const generateAccessToken = (email, role, name) => {
+export const generateAccessToken = ({ ...rest }) => {
     const payload = {
-        email,
-        role,
-        name,
+        ...rest,
     }
     const accessToken = jwt.sign(payload, JWT_KEY, {
         expiresIn: '1d',
@@ -13,11 +11,9 @@ export const generateAccessToken = (email, role, name) => {
     return accessToken
 }
 
-export const generateRefreshToken = (email, role, name) => {
+export const generateRefreshToken = ({ ...rest }) => {
     const payload = {
-        email,
-        role,
-        name,
+        ...rest,
     }
     const refreshToken = jwt.sign(payload, JWT_KEY, {
         expiresIn: '1y',

@@ -3,30 +3,6 @@ import mongoosePageinate from 'mongoose-paginate-v2'
 
 const { Schema } = mongoose
 
-const CommentSchema = {
-    commentId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comment',
-        required: true,
-    },
-    content: {
-        type: String,
-        required: true,
-    },
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
-    },
-    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    createdAt: {
-        type: mongoose.Schema.Types.Date,
-    },
-    updatedAt: {
-        type: mongoose.Schema.Types.Date,
-    },
-}
-
 const ProductSchema = new Schema(
     {
         name: {
@@ -76,9 +52,12 @@ const ProductSchema = new Schema(
             type: [String],
             default: 'l',
         },
-        comments: {
-            type: [CommentSchema],
-        },
+        comments: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Comment',
+            },
+        ],
         rating: [
             {
                 userId: {

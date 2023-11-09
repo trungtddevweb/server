@@ -13,7 +13,11 @@ import {
 import { verifyUser } from '../middlewares/verify.js'
 import { validateSignUp, validateSignIn } from '../services/userService.js'
 import validate from '../utils/validate.js'
-import { sendOTPToEmail, verifyOTP } from '../middlewares/sms.js'
+import {
+    sendOTPToEmail,
+    verifyOTP,
+    verifyOTPAuthentication,
+} from '../middlewares/sms.js'
 
 const router = express.Router()
 
@@ -30,12 +34,12 @@ router.post('/refresh-token', refreshToken)
 // api/auth/path...
 router.post('/forgot-password', forgotPassword, sendOTPToEmail)
 
-router.post('/verify-otp', verifyOTP)
-
 router.post('/change-password', changePassword)
+
+router.post('/verify-otp', verifyOTP)
 
 router.post('/user-authentication', userAuthentication, sendOTPToEmail)
 
-router.post('/verify-email', verifiedEmail)
+router.post('/verify-email', verifyOTPAuthentication, verifiedEmail)
 
 export default router

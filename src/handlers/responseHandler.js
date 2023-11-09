@@ -36,7 +36,7 @@ const tokenNotValid = (res) =>
     })
 
 const forbidden = (res) =>
-    responseWithData(res, {
+    responseWithData(res, 403, {
         success: false,
         message: 'Truy cập bị từ chối',
     })

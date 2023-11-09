@@ -39,7 +39,7 @@ export const sendOTPToEmail = async (req, res) => {
     }
 }
 
-export const verifyOTP = async (req, res) => {
+export const verifyOTP = async (req, res, next) => {
     const { token, email } = req.body
 
     try {
@@ -56,10 +56,35 @@ export const verifyOTP = async (req, res) => {
         if (!tokenValidate) {
             return responseHandler.badRequest(res, 'Mã OTP chưa chính xác!')
         }
+
         responseHandler.success(res, {
             success: true,
-            message: 'Xác thực thành công',
+            message: 'Mã xác thực chính xác',
         })
+    } catch (error) {
+        responseHandler.error(res, error)
+    }
+}
+
+export const verifyOTPAuthentication = async (req, res, next) => {
+    const { token, email } = req.body
+
+    try {
+        const user = await User.findOne({ email })
+        if (!user)
+            return responseHandler.notFound(res, 'Người dùng không tồn tại!')
+        const { base32: secret } = user.secretKey
+        const tokenValidate = speakeasy.totp.verify({
+            secret,
+            encoding: 'base32',
+            token,
+            window: 6,
+        })
+        if (!tokenValidate) {
+            return responseHandler.badRequest(res, 'Mã OTP chưa chính xác!')
+        }
+        req.payload = user
+        next()
     } catch (error) {
         responseHandler.error(res, error)
     }

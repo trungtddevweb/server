@@ -17,11 +17,6 @@ const UserSchema = new Schema(
             required: true,
             lowercase: true,
         },
-        phoneNumber: {
-            type: String,
-            unique: true,
-            default: '',
-        },
         verifiedEmail: {
             type: Boolean,
             default: false,

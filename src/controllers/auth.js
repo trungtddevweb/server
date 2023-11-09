@@ -44,16 +44,16 @@ export const signIn = async (req, res) => {
                 'Tài khoản hoặc mật khẩu chưa đúng!'
             )
 
-        const accessToken = generateAccessToken(
-            user.email,
-            user.role,
-            user.name
-        )
-        const refreshToken = generateRefreshToken(
-            user.email,
-            user.role,
-            user.name
-        )
+        const accessToken = generateAccessToken({
+            email: user.email,
+            role: user.role,
+            name: user.name,
+        })
+        const refreshToken = generateRefreshToken({
+            email: user.email,
+            role: user.role,
+            name: user.name,
+        })
 
         await User.findOneAndUpdate(
             { email },
@@ -252,7 +252,8 @@ export const userAuthentication = async (req, res, next) => {
 }
 
 export const verifiedEmail = async (req, res) => {
-    const { email } = req.body
+    const { email } = req.payload
+    console.log(req.payload)
 
     try {
         const user = await User.findOneAndUpdate(
