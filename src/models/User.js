@@ -22,6 +22,10 @@ const UserSchema = new Schema(
             unique: true,
             default: '',
         },
+        verifiedEmail: {
+            type: Boolean,
+            default: false,
+        },
         secretKey: {
             type: Object,
             unique: true,

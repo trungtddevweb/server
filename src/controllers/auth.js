@@ -6,11 +6,6 @@ import {
     generateRefreshToken,
 } from '../services/authServices.js'
 import responseHandler from '../handlers/responseHandler.js'
-import {
-    SECRET_OTP_KEY,
-    TWILIO_AUTH_KEY,
-    TWILIO_SID_KEY,
-} from '../utils/const.js'
 import speakeasy from 'speakeasy'
 
 // SIGN_IN
@@ -23,18 +18,24 @@ export const signIn = async (req, res) => {
                 res,
                 'Tài khoản hoặc mật khẩu chưa đúng!'
             )
-        if (user.googleLogin) {
+        if (user.googleLogin)
             return responseHandler.badRequest(
                 res,
                 `Vui lòng đăng nhập email: ${email} với Google.`
             )
-        }
-        if (!user.isActive) {
+
+        if (!user.isActive)
             return responseHandler.badRequest(
                 res,
                 'Tài khoản của bạn đã bị khóa! Vui lòng liên hệ bên CSKH để được dướng dẫn.'
             )
-        }
+
+        if (!user.verifiedEmail)
+            return responseHandler.badRequest(
+                res,
+                'Hãy xác thực tài khoản của bạn bằng email đã đăng ký',
+                403
+            )
 
         const isCorrect = await bcrypt.compare(password, user.password)
         if (!isCorrect)
@@ -224,6 +225,51 @@ export const changePassword = async (req, res) => {
         responseHandler.success(res, {
             success: true,
             message: 'Cập nhập mật khẩu thành công',
+        })
+    } catch (error) {
+        responseHandler.error(res, error)
+    }
+}
+
+export const userAuthentication = async (req, res, next) => {
+    const { email } = req.body
+
+    try {
+        const user = await User.findOne({ email })
+        if (!user)
+            return responseHandler.notFound(res, 'Người dùng không tồn tại!')
+
+        if (user.verifiedEmail)
+            return responseHandler.badRequest(
+                res,
+                'Tài khoản của bạn đã được xác thực rồi!'
+            )
+        req.payload = user
+        next()
+    } catch (error) {
+        responseHandler.error(res, error)
+    }
+}
+
+export const verifiedEmail = async (req, res) => {
+    const { email } = req.body
+
+    try {
+        const user = await User.findOneAndUpdate(
+            { email },
+            {
+                $set: {
+                    verifiedEmail: true,
+                },
+            },
+            { new: true }
+        )
+        if (!user)
+            return responseHandler.notFound(res, 'Người dùng không tồn tại')
+
+        responseHandler.success(res, {
+            success: true,
+            message: 'Xác thực người dùng thành công!',
         })
     } catch (error) {
         responseHandler.error(res, error)

@@ -10,10 +10,11 @@ const error = (res, error) => {
     })
 }
 
-const badRequest = (res, message) =>
+const badRequest = (res, message, status = {}) =>
     responseWithData(res, 400, {
         success: false,
         message,
+        status,
     })
 
 const created = (res, data) => responseWithData(res, 201, data)

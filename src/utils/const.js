@@ -25,7 +25,9 @@ export const TWILIO_SID_KEY = process.env.TWILIO_SID_KEY
 export const TWILIO_AUTH_KEY = process.env.TWILIO_AUTH_KEY
 export const MY_PHONE_NUMBER = process.env.MY_PHONE_NUMBER
 
-export const SECRET_OTP_KEY = process.env.SECRET_OTP_KEY
+// Email
+export const USER_EMAIL = process.env.USER_EMAIL
+export const PW_EMAIL = process.env.PW_EMAIL
 
 export const optionsPaginate = (limit, page, rest = {}) => {
     return {
