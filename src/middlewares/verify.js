@@ -9,6 +9,12 @@ export const verifyUser = async (req, res, next) => {
         const accessToken = req.headers['authorization'].split(' ')[1]
         const decoded = jwt.verify(accessToken, JWT_KEY)
         req.user = decoded
+        if (!req.user.isActive)
+            return responseHandler.badRequest(
+                res,
+                'Tài khoản của bạn đã bị khóa!'
+            )
+
         next()
     } catch (error) {
         responseHandler.badRequest(res, error)

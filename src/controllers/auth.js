@@ -48,11 +48,13 @@ export const signIn = async (req, res) => {
             email: user.email,
             role: user.role,
             name: user.name,
+            isActive: user.isActive,
         })
         const refreshToken = generateRefreshToken({
             email: user.email,
             role: user.role,
             name: user.name,
+            isActive: user.isActive,
         })
 
         await User.findOneAndUpdate(

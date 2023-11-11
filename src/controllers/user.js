@@ -153,12 +153,30 @@ export const ratingProduct = async (req, res) => {
     const { ratingValue } = req.body
     const { userId } = req.user
     try {
+        const product = await Product.findById(productId)
+
+        if (!product) {
+            return responseHandler.notFound(res, 'Sản phẩm không tồn tại')
+        }
+
+        // Kiểm tra xem người dùng đã đánh giá chưa
+        const existingRating = product.rating.find(
+            (r) => String(r.userId) === String(userId)
+        )
+
+        if (existingRating) {
+            return responseHandler.error(
+                res,
+                'Người dùng đã đánh giá sản phẩm trước đó'
+            )
+        }
+
         const updatedProduct = await Product.findByIdAndUpdate(
             productId,
             {
                 $push: {
                     rating: {
-                        userId: userId,
+                        userId,
                         ratingValue,
                     },
                 },
