@@ -1,5 +1,6 @@
 import express from 'express'
 import {
+    addProductToCart,
     getAUser,
     ratingProduct,
     // getAllPostSaved,
@@ -7,20 +8,18 @@ import {
     // savePostToUser,
     updatedUser,
 } from '../controllers/user.js'
-import { verifyAdmin, verifyUser } from '../middlewares/verify.js'
+import { checkRequiredFields } from '../middlewares/checkRequiredFields.js'
 
 const router = express.Router()
 
-router.get('/find-user/:userId', verifyAdmin, getAUser)
+router.post('/rating-product/:productId', ratingProduct)
 
-// router.get('/find/saved-post', verifyUser, getAllPostSaved)
+router.patch('/update-user', updatedUser)
 
-// router.post('/saved-post', verifyUser, savePostToUser)
-
-// router.post('/remove-post-saved', verifyUser, removePostSaved)
-
-router.post('/rating-product/:productId', verifyUser, ratingProduct)
-
-router.patch('/update-user', verifyUser, updatedUser)
+router.post(
+    '/add-products-to-cart',
+    checkRequiredFields(['productId', 'quantity', 'size', 'color']),
+    addProductToCart
+)
 
 export default router

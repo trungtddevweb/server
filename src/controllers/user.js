@@ -195,3 +195,54 @@ export const ratingProduct = async (req, res) => {
         responseHandler.error(res, error)
     }
 }
+
+export const addProductToCart = async (req, res) => {
+    const { productId, quantity, size, color } = req.body
+    const { email } = req.user
+    try {
+        const user = await User.findOne({ email }).populate('carts.productId')
+        if (!user)
+            return responseHandler.notFound(res, 'Người dùng không tồn tại.')
+
+        // Tìm kiếm sản phẩm trong giỏ hàng của người dùng
+        const productIndex = user.carts.findIndex(
+            (p) =>
+                p.productId._id.toString() === productId.toString() &&
+                p.size === size &&
+                p.color === color
+        )
+        // Nếu sản phẩm chưa có trong giỏ hàng, thêm sản phẩm mới vào giỏ hàng
+        const product = await Product.findById(productId)
+        if (!product)
+            return responseHandler.notFound(res, 'Sản phẩm không tồn tại.')
+        if (product && product.quantity > quantity) {
+            if (productIndex === -1) {
+                const sumPrice = quantity * product.price
+                user.carts.push({
+                    productId: product._id,
+                    quantity,
+                    size,
+                    color,
+                    sumPrice,
+                })
+            } else {
+                // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng lên 1
+                user.carts[productIndex].quantity += quantity
+                user.carts[productIndex].sumPrice +=
+                    quantity * user.carts[productIndex].productId.price
+
+                console.log(user.carts[productIndex].productId.price)
+            }
+            await user.save()
+
+            // Trả về thông tin người dùng đã được cập nhật thành công
+            return responseHandler.success(res, user.carts)
+        }
+        return responseHandler.badRequest(
+            res,
+            'Số lượng sản phẩm trong kho không đủ'
+        )
+    } catch (error) {
+        responseHandler.error(res, error)
+    }
+}

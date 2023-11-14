@@ -25,7 +25,16 @@ const UserSchema = new Schema(
             type: Object,
             unique: true,
         },
-
+        info: {
+            phoneNumber: {
+                type: String,
+                unique: true,
+            },
+            address: {
+                type: String,
+                default: '',
+            },
+        },
         password: {
             type: String,
             select: false,
@@ -34,6 +43,36 @@ const UserSchema = new Schema(
             type: String,
             default: '',
         },
+        orders: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Order',
+            },
+        ],
+        carts: [
+            {
+                productId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Product',
+                    required: true,
+                },
+                quantity: {
+                    type: Number,
+                    required: true,
+                },
+                size: {
+                    type: String,
+                    required: true,
+                },
+                color: {
+                    type: String,
+                    required: true,
+                },
+                sumPrice: {
+                    type: Number,
+                },
+            },
+        ],
         isActive: {
             type: Boolean,
             default: true,
@@ -61,6 +100,12 @@ const UserSchema = new Schema(
             {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Voucher',
+            },
+        ],
+        cancelOrders: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Order',
             },
         ],
         rated: [

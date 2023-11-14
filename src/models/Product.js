@@ -52,6 +52,15 @@ const ProductSchema = new Schema(
             type: [String],
             default: 'l',
         },
+        regularPrice: {
+            type: Number,
+        },
+        flashSaleStart: {
+            type: Date,
+        },
+        flashSaleEnd: {
+            type: Date,
+        },
         comments: [
             {
                 type: mongoose.Schema.Types.ObjectId,
