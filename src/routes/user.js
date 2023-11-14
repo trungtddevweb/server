@@ -3,14 +3,13 @@ import {
     addProductToCart,
     getAUser,
     ratingProduct,
-    // getAllPostSaved,
-    // removePostSaved,
-    // savePostToUser,
     updatedUser,
 } from '../controllers/user.js'
 import { checkRequiredFields } from '../middlewares/checkRequiredFields.js'
 
 const router = express.Router()
+
+router.get('/get-user', getAUser)
 
 router.post('/rating-product/:productId', ratingProduct)
 
