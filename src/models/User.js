@@ -28,7 +28,6 @@ const UserSchema = new Schema(
         info: {
             phoneNumber: {
                 type: String,
-                unique: true,
             },
             address: {
                 type: String,
