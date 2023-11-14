@@ -47,3 +47,12 @@ export const getAllStarsDashboard = async (req, res) => {
         responseHandler.error(res, error)
     }
 }
+
+export const getAverageSaleDashboard = async (req, res) => {
+    const { limit, page } = req.query
+    try {
+        responseHandler.success(res, rating)
+    } catch (error) {
+        responseHandler.error(res, error)
+    }
+}

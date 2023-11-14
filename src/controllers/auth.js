@@ -123,17 +123,29 @@ export const googleSignIn = async (req, res) => {
 
         const existingUser = await User.findOne({ email })
         const accessToken = existingUser
-            ? generateAccessToken(
-                  existingUser.email,
-                  existingUser.role,
-                  existingUser.name
-              )
-            : generateAccessToken(email, 'user', name)
+            ? generateAccessToken({
+                  email: existingUser.email,
+                  role: existingUser.role,
+                  name: existingUser.name,
+                  isActive: existingUser.isActive,
+              })
+            : generateAccessToken({
+                  email,
+                  role: 'customer',
+                  name,
+                  isActive: true,
+              })
 
         const authorizationHeader = `Bearer ${accessToken}`
         res.setHeader('Authorization', authorizationHeader)
 
         if (existingUser) {
+            if (!existingUser.verifiedEmail)
+                return responseHandler.badRequest(
+                    res,
+                    'Hãy xác thực tài khoản của bạn bằng email đã đăng ký',
+                    403
+                )
             await existingUser.updateOne({ accessToken }, { new: true })
             responseHandler.success(res, existingUser)
         } else {
@@ -170,18 +182,19 @@ export const refreshToken = async (req, res, next) => {
         }
 
         // Thực hiện quá trình refresh token để lấy access token mới
-        const newAccessToken = generateAccessToken(
-            existingUser.email,
-            existingUser.role,
-            existingUser.name
-        )
+        const newAccessToken = generateAccessToken({
+            email: existingUser.email,
+            role: existingUser.role,
+            name: existingUser.name,
+            isActive: existingUser.isActive,
+        })
 
         // Cập nhật access token mới vào cơ sở dữ liệu
         await existingUser.updateOne({ accessToken: newAccessToken })
 
         const authorizationHeader = `Bearer ${newAccessToken}`
         res.setHeader('Authorization', authorizationHeader)
-        res.status(200).json({ accessToken: newAccessToken })
+        responseHandler.created(res, { accessToken: newAccessToken })
     } catch (error) {
         responseHandler.error(res, error)
     }
