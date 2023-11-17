@@ -149,3 +149,40 @@ export const addProductToCart = async (req, res) => {
         responseHandler.error(res, error)
     }
 }
+
+export const removeProductFromCart = async (req, res) => {
+    const { email } = req.user
+    const { itemId } = req.body
+
+    try {
+        const user = await User.findOne({ email })
+        if (!user) {
+            return res
+                .status(404)
+                .json({ message: 'Không tìm thấy người dùng' })
+        }
+
+        const productIndex = user.carts.find(
+            (productItem) => productItem._id.toString() === itemId
+        )
+        if (productIndex) {
+            const updatedUser = await User.findOneAndUpdate(
+                { email },
+                {
+                    $pull: {
+                        carts: productIndex,
+                    },
+                },
+                { new: true }
+            )
+            responseHandler.success(res, updatedUser.carts)
+        } else {
+            return responseHandler.notFound(
+                res,
+                'Sản phẩm không có trong giỏ hàng'
+            )
+        }
+    } catch (error) {
+        responseHandler.error(res, error)
+    }
+}

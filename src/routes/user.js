@@ -3,6 +3,7 @@ import {
     addProductToCart,
     getAUser,
     ratingProduct,
+    removeProductFromCart,
     updatedUser,
 } from '../controllers/user.js'
 import { checkRequiredFields } from '../middlewares/checkRequiredFields.js'
@@ -20,5 +21,7 @@ router.post(
     checkRequiredFields(['productId', 'quantity', 'size', 'color']),
     addProductToCart
 )
+
+router.put('/remove-product-from-cart', removeProductFromCart)
 
 export default router
