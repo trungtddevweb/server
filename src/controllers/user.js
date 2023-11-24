@@ -103,7 +103,7 @@ export const addProductToCart = async (req, res) => {
     const { productId, quantity, size, color } = req.body
     const { email } = req.user
     try {
-        const user = await User.findOne({ email }).populate('carts.productId')
+        const user = await User.findOne({ email })
         if (!user)
             return responseHandler.notFound(res, 'Người dùng không tồn tại.')
 
@@ -114,7 +114,9 @@ export const addProductToCart = async (req, res) => {
                 p.size === size &&
                 p.color === color
         )
+
         // Nếu sản phẩm chưa có trong giỏ hàng, thêm sản phẩm mới vào giỏ hàng
+        console.log(user.carts)
         const product = await Product.findById(productId)
         if (!product)
             return responseHandler.notFound(res, 'Sản phẩm không tồn tại.')
@@ -131,10 +133,7 @@ export const addProductToCart = async (req, res) => {
             } else {
                 // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng lên 1
                 user.carts[productIndex].quantity += quantity
-                user.carts[productIndex].sumPrice +=
-                    quantity * user.carts[productIndex].productId.price
-
-                console.log(user.carts[productIndex].productId.price)
+                user.carts[productIndex].sumPrice += quantity * product.price
             }
             await user.save()
 
