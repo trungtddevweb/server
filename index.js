@@ -8,6 +8,7 @@ import bodyParser from 'body-parser'
 import { PORT } from './src/utils/const.js'
 import appRoutes from './src/routes/index.js'
 import connectDB from './src/services/connect.js'
+import runJobs from './src/jobs/index.js'
 
 const app = express()
 
@@ -37,8 +38,15 @@ app.use((err, req, res, next) => {
 
 connectDB()
 
+runJobs()
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
+})
+
+process.on('unhandledRejection', (err) => {
+    console.error(`An error occurred: ${err.message}`)
+    server.close(() => process.exit(1))
 })
 
 export default app

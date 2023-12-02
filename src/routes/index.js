@@ -5,6 +5,7 @@ import authRoutes from './auth.js'
 import commentRoutes from './comment.js'
 import productRoutes from './product.js'
 import dashboardRoutes from './dashboard.js'
+import voucherRoutes from './voucher.js'
 
 import { verifyAdmin, verifyUser } from '../middlewares/verify.js'
 
@@ -21,5 +22,7 @@ router.use('/comment', commentRoutes)
 router.use('/products', productRoutes)
 
 router.use('/dashboard', verifyAdmin, dashboardRoutes)
+
+router.use('/voucher', voucherRoutes)
 
 export default router

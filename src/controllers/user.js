@@ -116,7 +116,6 @@ export const addProductToCart = async (req, res) => {
         )
 
         // Nếu sản phẩm chưa có trong giỏ hàng, thêm sản phẩm mới vào giỏ hàng
-        console.log(user.carts)
         const product = await Product.findById(productId)
         if (!product)
             return responseHandler.notFound(res, 'Sản phẩm không tồn tại.')
