@@ -1,11 +1,11 @@
-import responseHandler from '../handlers/responseHandler'
-import Order from '../models/Order'
-import User from '../models/User'
-import Voucher from '../models/Voucher'
+import responseHandler from '../handlers/responseHandler.js'
+import Order from '../models/Order.js'
+import User from '../models/User.js'
+import Voucher from '../models/Voucher.js'
 import {
     generateUniqueOrderCode,
     updateProductQuantities,
-} from '../utils/const'
+} from '../utils/const.js'
 
 export const createOrder = async (req, res) => {
     const { products, voucher } = req.body
