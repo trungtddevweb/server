@@ -9,9 +9,7 @@ const productSchema = new mongoose.Schema({
         ref: 'Product',
         required: true,
     },
-    name: { type: String, required: true },
     quantity: { type: Number, required: true },
-    price: { type: Number, required: true },
     color: { type: String, required: true },
     size: { type: String, required: true },
     sumPrice: { type: Number, required: true },
@@ -25,33 +23,36 @@ const OrderSchema = new Schema(
             required: true,
         },
         orderCode: { type: String, required: true, unique: true },
-        orderedDate: { type: Date, default: Date.now },
         products: { type: [productSchema], required: true },
-        totalPrice: { type: Number, required: true },
         paymentMethod: { type: String },
-        location: {
-            selectedProvinces: { type: String },
-            selectedDistrict: { type: String },
-            selectedWard: { type: String },
+        voucherCode: {
+            type: String,
         },
-        shippingAddress: {
-            fullName: { type: String, required: true },
-            address: { type: String, required: true },
-            phone: { type: String, required: true },
+        fullName: {
+            type: String,
+            required: true,
         },
-        discount: {
+        phoneNumber: {
+            type: String,
+            default: '',
+        },
+        discountValueOfVoucher: {
             type: Number,
             default: 0,
         },
-        voucherCode: {
+        district: {
             type: String,
+            default: '',
+        },
+        province: {
+            type: String,
+            default: '',
         },
         status: {
             type: String,
             enum: ['prepare', 'pending', 'delivering', 'delivered', 'cancel'],
             default: 'prepare',
         },
-        isPaid: { type: Boolean, default: false },
     },
     {
         timestamps: true,

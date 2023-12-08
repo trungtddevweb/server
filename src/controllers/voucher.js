@@ -98,7 +98,7 @@ export const deletedVoucher = async (req, res) => {
         if (!selectedIds)
             return res.status(400).json({
                 status: false,
-                message: 'SelectedIds is not specified',
+                message: 'SelectedIds chưa được định nghĩa',
             })
         const checkIds = await Voucher.find({
             _id: {

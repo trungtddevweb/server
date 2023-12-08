@@ -63,13 +63,13 @@ export const isProductAvailable = async (productId) => {
 }
 
 export const updateProductQuantities = async (products) => {
-    const updateOperations = products.map(async (productId) => {
-        const product = await Product.findById(productId.productId._id)
+    const updateOperations = products.map(async (productItem) => {
+        const product = await Product.findById(productItem.productId)
         if (!product || product.quantity <= 0) {
             throw new Error('Sản phẩm không có sẵn trong cửa hàng')
         }
-        return Product.findByIdAndUpdate(productId.productId._id, {
-            $inc: { quantity: -productId.quantity },
+        return Product.findByIdAndUpdate(productItem.productId, {
+            $inc: { quantity: -productItem.quantity },
         })
     })
 
