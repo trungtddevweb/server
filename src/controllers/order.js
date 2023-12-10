@@ -53,6 +53,7 @@ export const createOrder = async (req, res) => {
         responseHandler.success(res, {
             success: true,
             message: `Đặt hàng thành công! Mã đơn hàng của bạn là ${newOrder.orderCode}`,
+            orderCode: newOrder.orderCode,
         })
     } catch (error) {
         responseHandler.error(res, error)
