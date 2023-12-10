@@ -13,8 +13,7 @@ export const getAUser = async (req, res) => {
             return responseHandler.notFound(res, 'Không tìm thấy người dùng.')
         return responseHandler.success(res, user)
     } catch (error) {
-        console.log(error)
-        res.status(500).json({ status: 'error', message: error })
+        responseHandler.error(res, error)
     }
 }
 
@@ -180,6 +179,25 @@ export const removeProductFromCart = async (req, res) => {
                 'Sản phẩm không có trong giỏ hàng'
             )
         }
+    } catch (error) {
+        responseHandler.error(res, error)
+    }
+}
+
+export const clearCart = async (req, res) => {
+    const { email } = req.user
+    try {
+        const updatedUser = await User.findOneAndUpdate(
+            { email },
+            { $set: { carts: [] } },
+            { new: true }
+        )
+
+        if (!updatedUser) {
+            return responseHandler.error(res, 'User not found')
+        }
+
+        responseHandler.success(res, 'Carts cleared successfully')
     } catch (error) {
         responseHandler.error(res, error)
     }

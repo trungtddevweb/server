@@ -1,6 +1,7 @@
 import express from 'express'
 import {
     addProductToCart,
+    clearCart,
     getAUser,
     ratingProduct,
     removeProductFromCart,
@@ -23,5 +24,7 @@ router.post(
 )
 
 router.put('/remove-product-from-cart', removeProductFromCart)
+
+router.patch('/clear-cart', clearCart)
 
 export default router
