@@ -41,7 +41,7 @@ const forbidden = (res) =>
         message: 'Truy cập bị từ chối',
     })
 
-const notFound = (res, message) =>
+const notFound = (res, message = 'Tài nguyên không tìm thấy') =>
     responseWithData(res, 404, {
         success: false,
         message,

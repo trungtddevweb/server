@@ -19,7 +19,7 @@ export const getAProduct = async (req, res) => {
     try {
         const { productId } = req.params
         const product = await Product.findById(productId)
-        res.status(200).json(product)
+        responseHandler.success(res, product)
     } catch (error) {
         responseHandler.error(res, error)
     }
@@ -91,7 +91,6 @@ export const getRandomProducts = async (req, res) => {
         ])
         responseHandler.success(res, products)
     } catch (error) {
-        console.error(error)
         responseHandler.error(res, error)
     }
 }
