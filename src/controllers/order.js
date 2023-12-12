@@ -67,9 +67,12 @@ export const getOrder = async (req, res) => {
 
     try {
         const user = await User.findOne({ email })
-        if (user)
+        if (!user)
             return responseHandler.notFound(res, 'Người dùng không tồn tại!')
-        const collection = Order.paginate({}, optionsPaginate(limit, page))
+        const collection = await Order.paginate(
+            {},
+            optionsPaginate(limit, page)
+        )
         responseHandler.getData(res, collection)
     } catch (error) {
         responseHandler.error(res, error)
