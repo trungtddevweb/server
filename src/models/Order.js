@@ -48,6 +48,10 @@ const OrderSchema = new Schema(
             type: String,
             default: '',
         },
+        totalPrice: {
+            type: Number,
+            required: true,
+        },
         status: {
             type: String,
             enum: ['prepare', 'pending', 'delivering', 'delivered', 'cancel'],

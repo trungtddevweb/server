@@ -37,11 +37,16 @@ export const createOrder = async (req, res) => {
             }
         }
 
+        const totalPrice = products.reduce(
+            (accumulator, currentItem) => accumulator + currentItem.sumPrice,
+            0
+        )
         await updateProductQuantities(products)
 
         const newOrder = Order({
             ...req.body,
             orderCode,
+            totalPrice,
             voucherCode: voucher,
             discountValueOfVoucher: discount,
             userId: user._id,
