@@ -30,23 +30,16 @@ export const updatedUser = async (req, res) => {
 
         if (!user) {
             // Nếu không tìm thấy người dùng, trả về thông báo lỗi
-            return res.status(404).json({
-                status: 404,
-                message: 'Không tìm thấy người dùng với email đã cung cấp.',
-            })
+            return responseHandler.notFound(
+                res,
+                'Không tìm thấy người dùng với email đã cung cấp.'
+            )
         }
 
-        return res.status(200).json({
-            status: 200,
-            message: 'Cập nhập thông tin người dùng thành công.',
-            data: user,
-        })
+        return responseHandler.success(res, user)
     } catch (error) {
         console.log(error)
-        res.status(500).json({
-            status: 'error',
-            message: error,
-        })
+        responseHandler.error(res, error)
     }
 }
 

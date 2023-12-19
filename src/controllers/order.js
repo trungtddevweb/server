@@ -26,7 +26,10 @@ export const createOrder = async (req, res) => {
                     res,
                     'Mã voucher không tồn tại hoặc đã hết hạn!'
                 )
-            if (checkVoucher.used === checkVoucher.total) {
+            if (
+                checkVoucher.used === checkVoucher.total ||
+                checkVoucher.expired
+            ) {
                 responseHandler.badRequest(res, 'Voucher đã được sử dụng hết')
             } else {
                 discount = checkVoucher.discount
