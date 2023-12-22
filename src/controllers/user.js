@@ -1,5 +1,6 @@
 // import Post from '../models/Post.js'
 import responseHandler from '../handlers/responseHandler.js'
+import Order from '../models/Order.js'
 import Product from '../models/Product.js'
 import User from '../models/User.js'
 import { optionsPaginate } from '../utils/const.js'
@@ -191,6 +192,22 @@ export const clearCart = async (req, res) => {
         }
 
         responseHandler.success(res, 'Carts cleared successfully')
+    } catch (error) {
+        responseHandler.error(res, error)
+    }
+}
+
+export const getOrderByUser = async (req, res) => {
+    const { userId } = req.user
+    const { limit, page } = req.query
+    try {
+        const orders = await Order.paginate(
+            { userId },
+            optionsPaginate(limit, page)
+        )
+        if (!orders)
+            responseHandler.notFound(res, 'Chưa có đơn hàng nào được đặt')
+        responseHandler.success(res, orders)
     } catch (error) {
         responseHandler.error(res, error)
     }

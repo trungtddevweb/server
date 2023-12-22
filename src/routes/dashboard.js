@@ -8,6 +8,7 @@ import {
     deleteFlashSaleProduct,
     flashSaleProduct,
     updateFlashSaleTime,
+    getAllVoucher,
 } from '../controllers/dashboard.js'
 import { validateFlashSaleProduct } from '../middlewares/joiMiddleware.js'
 
@@ -30,5 +31,7 @@ router.put('/flash-sale/products', updateFlashSaleTime)
 router.delete('/flash-sale/products', deleteFlashSaleProduct)
 
 router.get('/average-sales', getAverageSaleDashboard)
+
+router.get('/vouchers', getAllVoucher)
 
 export default router

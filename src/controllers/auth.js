@@ -49,12 +49,14 @@ export const signIn = async (req, res) => {
             role: user.role,
             name: user.name,
             isActive: user.isActive,
+            userId: user._id,
         })
         const refreshToken = generateRefreshToken({
             email: user.email,
             role: user.role,
             name: user.name,
             isActive: user.isActive,
+            userId: user._id,
         })
 
         await User.findOneAndUpdate(
@@ -128,12 +130,14 @@ export const googleSignIn = async (req, res) => {
                   role: existingUser.role,
                   name: existingUser.name,
                   isActive: existingUser.isActive,
+                  userId: existingUser._id,
               })
             : generateAccessToken({
                   email,
                   role: 'customer',
                   name,
                   isActive: true,
+                  userId: existingUser._id,
               })
 
         const authorizationHeader = `Bearer ${accessToken}`

@@ -2,6 +2,7 @@ import responseHandler from '../handlers/responseHandler.js'
 import Order from '../models/Order.js'
 import Product from '../models/Product.js'
 import User from '../models/User.js'
+import Voucher from '../models/User.js'
 import { optionsPaginate } from '../utils/const.js'
 
 export const getAllUsersDashboard = async (req, res) => {
@@ -163,5 +164,19 @@ export const updateFlashSaleTime = async (req, res) => {
         })
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message })
+    }
+}
+
+export const getAllVoucher = async (req, res) => {
+    const { limit, page } = req.query
+
+    try {
+        const vouchers = await Voucher.paginate(
+            {},
+            optionsPaginate(limit, page)
+        )
+        responseHandler.getData(res, vouchers)
+    } catch (error) {
+        responseHandler.error(res, error)
     }
 }

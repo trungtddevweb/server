@@ -3,6 +3,7 @@ import {
     addProductToCart,
     clearCart,
     getAUser,
+    getOrderByUser,
     ratingProduct,
     removeProductFromCart,
     updatedUser,
@@ -26,5 +27,7 @@ router.post(
 router.put('/remove-product-from-cart', removeProductFromCart)
 
 router.patch('/clear-cart', clearCart)
+
+router.get('/order', getOrderByUser)
 
 export default router
