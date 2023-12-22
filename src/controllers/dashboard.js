@@ -2,7 +2,7 @@ import responseHandler from '../handlers/responseHandler.js'
 import Order from '../models/Order.js'
 import Product from '../models/Product.js'
 import User from '../models/User.js'
-import Voucher from '../models/User.js'
+import Voucher from '../models/Voucher.js'
 import { optionsPaginate } from '../utils/const.js'
 
 export const getAllUsersDashboard = async (req, res) => {
